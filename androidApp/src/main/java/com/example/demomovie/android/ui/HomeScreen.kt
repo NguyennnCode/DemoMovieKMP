@@ -1,4 +1,4 @@
-package com.example.demomovie.android
+package com.example.demomovie.android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,7 +17,6 @@ import com.example.demomovie.android.ui.component.TopBannerField
 import com.example.demomovie.android.ui.component.UserField
 import com.example.demomovie.android.ui.component.category.CategoriesField
 import com.example.demomovie.model.Movie
-import com.example.shared_ui.SharedSearchField
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -44,7 +43,6 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(15.dp))
             Box(modifier = Modifier.padding(horizontal = 24.dp)) {
                 SearchField(modifier = Modifier)
-                SharedSearchField(modifier = Modifier)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
