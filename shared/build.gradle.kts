@@ -94,8 +94,4 @@ android {
     }
     namespace = "com.example.demomovie"
     compileSdk = 33
-    defaultConfig {
-        minSdk = 29
-        targetSdk = 33
-    }
 }

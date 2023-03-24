@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.dsl.decorator.SupportedPropertyType.Collection.List.type
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {

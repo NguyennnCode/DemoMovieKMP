@@ -37,8 +37,9 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
-                api("androidx.appcompat:appcompat:1.5.1")
-                api("androidx.core:core-ktx:1.8.0")
+                api("androidx.appcompat:appcompat:1.6.1")
+                api("androidx.core:core-ktx:1.9.0")
+                implementation("io.coil-kt:coil-compose:2.2.2")
             }
         }
         val androidUnitTest by getting
@@ -52,8 +53,8 @@ kotlin {
 android {
     namespace = "com.example.shared_ui"
     compileSdk = 33
-    defaultConfig {
-        minSdk = 29
-        targetSdk = 33
-    }
+}
+dependencies {
+    implementation("androidx.compose.ui:ui-graphics:1.4.0")
+    implementation(project(mapOf("path" to ":shared")))
 }

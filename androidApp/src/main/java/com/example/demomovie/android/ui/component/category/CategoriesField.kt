@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CategoriesField(
     modifier: Modifier,
+    onGoDetail: (Movie) -> Unit
 ) {
     val categories = Category.values()
     var loading by remember { mutableStateOf(false) }
@@ -116,8 +117,10 @@ fun CategoriesField(
                         enter = fadeIn(),
                         exit = fadeOut()
                     ),
-                    movies = moviesByCategory
-                )
+                    movies = moviesByCategory,
+                ){
+                    onGoDetail(it)
+                }
             } else {
                 Box(
                     modifier

@@ -7,7 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.demomovie.ShareMovie
 import com.example.demomovie.android.enums.Category
@@ -20,9 +19,8 @@ import com.example.demomovie.model.Movie
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(modifier: Modifier, onGoDetail: (Movie) -> Unit) {
     var movies: List<Movie>
-
     runBlocking {
         movies = ShareMovie().getMovies(Category.UP_COMING.category)
     }
@@ -30,6 +28,7 @@ fun HomeScreen() {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
+            .then(modifier)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -46,16 +45,14 @@ fun HomeScreen() {
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            TopBannerField(modifier = Modifier, movies = movies)
+            TopBannerField(modifier = Modifier, movies = movies) {
+                onGoDetail(it)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
-            CategoriesField(modifier = Modifier.fillMaxWidth())
+            CategoriesField(modifier = Modifier.fillMaxWidth()) {
+                onGoDetail(it)
+            }
         }
     }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }

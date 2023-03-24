@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun TopBannerField(modifier: Modifier, movies: List<Movie>) {
+fun TopBannerField(modifier: Modifier, movies: List<Movie>, onClickMovie: (Movie) -> Unit) {
     val pagerState = rememberPagerState(initialPage = 0)
 
     Column(
@@ -69,6 +69,9 @@ fun TopBannerField(modifier: Modifier, movies: List<Movie>) {
                             stop = 1f,
                             fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
+                    }
+                    .clickable {
+                        onClickMovie(movies[it])
                     },
                 pathImg = movies[it].backdropPath ?: "",
                 title = movies[it].title ?: "",
