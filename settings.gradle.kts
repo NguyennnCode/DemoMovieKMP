@@ -18,4 +18,5 @@ rootProject.name = "DemoMovie"
 include(":androidApp")
 include(":shared")
 include(":desktop")
+include(":jsApp")
 include(":shared-ui")

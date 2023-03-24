@@ -53,7 +53,6 @@ val typography = Typography(
 )
 
 fun main() = singleWindowApplication {
-
     val state = rememberLazyListState()
     var movies: List<Movie>
     runBlocking {

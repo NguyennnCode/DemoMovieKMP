@@ -6,6 +6,11 @@ plugins {
 
 kotlin {
 
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
+
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "18"
@@ -86,6 +91,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+            }
+        }
+
+        val jsMain by getting {
+            dependsOn(commonMain)
+            dependencies{
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
             }
         }
 
