@@ -43,6 +43,10 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+                with(Deps.Koin) {
+                    api(core)
+                }
             }
         }
         val commonTest by getting {

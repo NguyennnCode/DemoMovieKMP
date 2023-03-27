@@ -53,4 +53,10 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.27.1")
     implementation("androidx.compose.ui:ui-util:1.4.0")
     implementation("androidx.navigation:navigation-compose:2.5.3")
+
+    with(Deps.Koin) {
+        implementation(core)
+        implementation(android)
+        implementation(androidx)
+    }
 }

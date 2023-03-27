@@ -14,8 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.demomovie.android.ui.HomeScreen
 import com.example.shared_ui.ui.ShareMovieDetail
+import org.koin.core.component.KoinComponent
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
