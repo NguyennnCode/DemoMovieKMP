@@ -28,8 +28,9 @@ actual fun PosterImage(posterPath: String) {
             .clip(RoundedCornerShape(8.dp)), elevation = 8.dp
     ) {
         AsyncImage(
-
+            modifier = Modifier,
             model = "https://image.tmdb.org/t/p/w500/${posterPath}",
+            placeholder = painterResource(R.drawable.img_place_holder),
             contentDescription = "poster",
             contentScale = ContentScale.FillWidth
         )
