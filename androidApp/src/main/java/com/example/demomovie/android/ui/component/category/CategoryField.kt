@@ -1,5 +1,6 @@
 package com.example.demomovie.android.ui.component.category
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -22,7 +23,8 @@ import com.example.shared_ui.SharedMovieItem
 @Composable
 fun CategoryField(
     modifier: Modifier,
-    movies: List<Movie>
+    movies: List<Movie>,
+    onClick: (Movie) -> Unit
 ) {
     if (movies.isNotEmpty()) {
         LazyRow(
@@ -34,7 +36,7 @@ fun CategoryField(
         ) {
             items(movies) {
                 SharedMovieItem(
-                    modifier = Modifier,
+                    modifier = Modifier.clickable { onClick(it) },
                     imgPoster = {
                         AsyncImage(
                             modifier = Modifier.fillMaxWidth(),

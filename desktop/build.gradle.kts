@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.dsl.decorator.SupportedPropertyType.Collection.List.type
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -13,7 +12,7 @@ kotlin {
     jvm {
         withJava()
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = "18"
         }
     }
     sourceSets {

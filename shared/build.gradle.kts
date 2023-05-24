@@ -8,14 +8,14 @@ kotlin {
 
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = "18"
         }
     }
 
     android {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "18"
             }
         }
     }
@@ -43,6 +43,10 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+                with(Deps.Koin) {
+                    api(core)
+                }
             }
         }
         val commonTest by getting {
@@ -94,8 +98,4 @@ android {
     }
     namespace = "com.example.demomovie"
     compileSdk = 33
-    defaultConfig {
-        minSdk = 29
-        targetSdk = 33
-    }
 }

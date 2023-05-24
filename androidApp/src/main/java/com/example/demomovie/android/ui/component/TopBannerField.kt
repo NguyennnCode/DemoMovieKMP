@@ -33,13 +33,16 @@ import com.example.demomovie.android.theme.blue12CDD9
 import com.example.demomovie.android.theme.secondaryColor
 import com.example.demomovie.model.Movie
 import com.google.accompanist.pager.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun TopBannerField(modifier: Modifier, movies: List<Movie>) {
+fun TopBannerField(modifier: Modifier, movies: List<Movie>, onClickMovie: (Movie) -> Unit) {
     val pagerState = rememberPagerState(initialPage = 0)
-
+    val autoScroll by remember(pagerState.isScrollInProgress) {
+        derivedStateOf { !pagerState.isScrollInProgress }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,6 +72,9 @@ fun TopBannerField(modifier: Modifier, movies: List<Movie>) {
                             stop = 1f,
                             fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
+                    }
+                    .clickable {
+                        onClickMovie(movies[it])
                     },
                 pathImg = movies[it].backdropPath ?: "",
                 title = movies[it].title ?: "",
@@ -84,6 +90,23 @@ fun TopBannerField(modifier: Modifier, movies: List<Movie>) {
                 modifier = Modifier.align(Alignment.Center),
                 pageState = pagerState,
             )
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        snapshotFlow { autoScroll }.collect {
+            if (autoScroll) {
+                launch {
+                    repeat(Int.MAX_VALUE) {
+                        delay(2000)
+                        with(pagerState) {
+                            val target = if (currentPage < pageCount - 1) currentPage + 1 else 0
+                            pagerState.animateScrollToPage(target)
+                            println("autoScroll: $isScrollInProgress : targetPage: $target")
+                        }
+                    }
+                }
+            }
         }
     }
 }

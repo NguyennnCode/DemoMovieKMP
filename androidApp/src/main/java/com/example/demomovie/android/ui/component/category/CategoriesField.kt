@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,24 +20,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.demomovie.ShareMovie
 import com.example.demomovie.android.enums.Category
 import com.example.demomovie.android.theme.blue12CDD9
 import com.example.demomovie.android.theme.secondaryColor
 import com.example.demomovie.model.Movie
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 @Composable
 fun CategoriesField(
     modifier: Modifier,
+    onChangeCategory: (category: String) -> Unit,
+    categoryMovies: List<Movie>,
+    onGoDetail: (Movie) -> Unit
 ) {
     val categories = Category.values()
-    var loading by remember { mutableStateOf(false) }
 
     var selectedIndex by remember { mutableStateOf(0) }
-    var moviesByCategory by remember { mutableStateOf(emptyList<Movie>()) }
 
     Column(
         modifier = Modifier
@@ -90,7 +86,7 @@ fun CategoriesField(
                             exit = scaleOut()
                         )
                         .align(Alignment.CenterStart),
-                    text = getCategoryTitle(categories[selectedIndex]),
+                    text = remember { getCategoryTitle(categories[selectedIndex]) },
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     color = Color.White
@@ -110,42 +106,20 @@ fun CategoriesField(
         AnimatedContent(targetState = selectedIndex, transitionSpec = {
             slideInVertically { it } with slideOutVertically { -it }
         }) {
-            if (!loading) {
-                CategoryField(
-                    modifier = Modifier.animateEnterExit(
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ),
-                    movies = moviesByCategory
-                )
-            } else {
-                Box(
-                    modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .animateEnterExit(
-                                enter = fadeIn(),
-                                exit = fadeOut()
-                            ),
-                        color = blue12CDD9
-                    )
-                }
+            CategoryField(
+                modifier = Modifier.animateEnterExit(
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ),
+                movies = categoryMovies,
+            ) {
+                onGoDetail(it)
             }
         }
     }
 
     LaunchedEffect(key1 = selectedIndex) {
-        loading = true
-        withContext(Dispatchers.IO) {
-            runBlocking {
-                moviesByCategory = getMovieByCategory(categories[selectedIndex].category)
-            }
-            loading = false
-        }
+        onChangeCategory(categories[selectedIndex].category)
     }
 }
 
@@ -157,10 +131,6 @@ private fun getCategoryTitle(category: Category): String {
         Category.POPULAR -> "Popular"
         Category.UP_COMING -> "Upcoming"
     }
-}
-
-suspend fun getMovieByCategory(category: String): List<Movie> {
-    return ShareMovie().getMovies(category = category)
 }
 
 @Composable

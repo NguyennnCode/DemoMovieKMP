@@ -5,31 +5,29 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.demomovie.ShareMovie
-import com.example.demomovie.android.enums.Category
 import com.example.demomovie.android.theme.primaryColor
 import com.example.demomovie.android.ui.component.SearchField
 import com.example.demomovie.android.ui.component.TopBannerField
 import com.example.demomovie.android.ui.component.UserField
 import com.example.demomovie.android.ui.component.category.CategoriesField
 import com.example.demomovie.model.Movie
-import kotlinx.coroutines.runBlocking
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen() {
-    var movies: List<Movie>
-
-    runBlocking {
-        movies = ShareMovie().getMovies(Category.UP_COMING.category)
-    }
+fun HomeScreen(
+    modifier: Modifier,
+    homeViewModel: HomeViewModel = koinViewModel(),
+    onGoDetail: (Movie) -> Unit
+) {
+    val state by homeViewModel.state.collectAsState()
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
+            .then(modifier)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -46,16 +44,16 @@ fun HomeScreen() {
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            TopBannerField(modifier = Modifier, movies = movies)
+            TopBannerField(modifier = Modifier, movies = state.bannerMovies) {
+                onGoDetail(it)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
-            CategoriesField(modifier = Modifier.fillMaxWidth())
+            CategoriesField(modifier = Modifier.fillMaxWidth(), onChangeCategory = {
+                homeViewModel.getCategoryMovies(it)
+            }, categoryMovies = state.categoryMovies ) {
+                onGoDetail(it)
+            }
         }
     }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }
